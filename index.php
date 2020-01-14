@@ -10,6 +10,7 @@ $name = $_POST['name'];
 $selected = $_POST['item'];
 $nameErr = $checkErr = "";
 $valid = 0;
+$skills = (isset($_POST['item'])) ? $_POST['item'] : array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($name)) {
@@ -59,9 +60,8 @@ if ($valid == 0) {
             <p class="error text-danger d-inline"><?php echo $checkErr; ?></p><br>
 
             <?php
-            $count = 0;
-            foreach ($array as $item) {
-                echo "<label><input type='checkbox' name='item[]' value='$array[$item]' class='form-check-input'>$item</label><br>";
+            foreach ($array as $key => $value) {
+                echo "<label><input type='checkbox' name='item[]' value='$value' class='form-check-input'>$value</label><br>";
             }
             ?>
         </div>
@@ -77,8 +77,15 @@ if ($valid == 1) {
     if(!empty($selected)){
         $checked_count = count($_POST['item']) * 3.50;
 
-        echo "<p>Thank you, ".$name.", for your order!</p>";
-        echo "<p>Order total: ".number_format((float)$checked_count, 2, '.', '')."</p>";
+        echo "<div class='container'><p>Thank you, ".$name.", for your order!</p>";
+
+        echo "Order summary: <ul>";
+        foreach ($selected as $key => $value) {
+            echo "<li>".$value."</li>";
+        }
+        echo "</ul>";
+
+        echo "<p>Order total: ".number_format((float)$checked_count, 2, '.', '')."</p></div>";
     }
 }
 ?>
