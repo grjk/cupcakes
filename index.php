@@ -1,4 +1,10 @@
 <?php
+
+// Error reporting
+ini_set("'display_errors', 1");
+error_reporting(E_ALL);
+
+$array = array('choc' => 'Chocolate', 'coffee' => 'Coffee', 'cac' => 'Cookies & Cream', 'punicorn' => 'Purple Unicorn', 'vanilla' => 'Vanilla');
 ?>
 
 <!doctype html>
@@ -14,9 +20,26 @@
     <title>Document</title>
 </head>
 <body>
-<form class="form-group">
-    <label for="name">Your name:</label>
-    <input type="text" name="name" class="form-text" width="10%" placeholder="Input your name here">
+<form class="container mt-3">
+    <div class="form-group">
+        <label for="name">Your name:</label>
+        <input type="text" name="name" class="form-control w-25" placeholder="Input your name here">
+    </div>
+
+    <div class="form-check">
+        <?php
+        $count = 0;
+        foreach ($array as $item) {
+            if ($count == 0) {
+                echo "<label><input type='checkbox' name='$array[$item]' value='$array[$item]' class='form-check-input' checked>$item</label><br>";
+            }
+            else {
+                echo "<label><input type='checkbox' name='$array[$item]' value='$array[$item]' class='form-check-input'>$item</label><br>";
+            }
+            $count++;
+        }
+        ?>
+    </div>
 </form>
 
 
