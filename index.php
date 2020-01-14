@@ -5,6 +5,19 @@ ini_set("'display_errors', 1");
 error_reporting(E_ALL);
 
 $array = array('choc' => 'Chocolate', 'coffee' => 'Coffee', 'cac' => 'Cookies & Cream', 'punicorn' => 'Purple Unicorn', 'vanilla' => 'Vanilla');
+
+$name = $_POST['name'];
+$selected = $_POST['checkbox'];
+$nameErr = $checkErr = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($name)) {
+        $nameErr = "* Name is required";
+    }
+    if(!isset($selected)) {
+        $checkErr = "* Atleast one selection is required";
+    }
+}
 ?>
 
 <!doctype html>
@@ -15,36 +28,52 @@ $array = array('choc' => 'Chocolate', 'coffee' => 'Coffee', 'cac' => 'Cookies & 
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
 
     <title>Document</title>
 </head>
 <body>
-<form class="container mt-3">
+<form method="post" action="#.php" class="container mt-3">
+    <h1>Cupcake Fundraiser</h1>
+
     <div class="form-group">
-        <label for="name">Your name:</label>
-        <input type="text" name="name" class="form-control w-25" placeholder="Input your name here">
+        <label for="name">Your name:</label><br>
+        <input type="text" name="name" class="form-control w-25 d-inline" placeholder="Input your name here">
+        <span class="error text-danger d-inline"><?php echo $nameErr; ?></span>
     </div>
 
     <div class="form-check">
+        <p class="error text-danger d-inline"><?php echo $checkErr; ?></p><br>
         <?php
         $count = 0;
         foreach ($array as $item) {
             if ($count == 0) {
-                echo "<label><input type='checkbox' name='$array[$item]' value='$array[$item]' class='form-check-input' checked>$item</label><br>";
+                echo "<label><input type='checkbox' name='checkbox' value='$array[$item]' class='form-check-input'>$item</label><br>";
             }
             else {
-                echo "<label><input type='checkbox' name='$array[$item]' value='$array[$item]' class='form-check-input'>$item</label><br>";
+                echo "<label><input type='checkbox' name='checkbox' value='$array[$item]' class='form-check-input'>$item</label><br>";
             }
             $count++;
         }
         ?>
     </div>
+
+    <button id="submit" type="submit" class="btn btn-info">Submit order</button>
 </form>
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- JQuery -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/js/mdb.min.js"></script>
 </body>
 </html>
