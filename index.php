@@ -7,15 +7,19 @@ error_reporting(E_ALL);
 $array = array('choc' => 'Chocolate', 'coffee' => 'Coffee', 'cac' => 'Cookies & Cream', 'punicorn' => 'Purple Unicorn', 'vanilla' => 'Vanilla');
 
 $name = $_POST['name'];
-$selected = $_POST['checkbox'];
+$selected = $_POST['item'];
 $nameErr = $checkErr = "";
+$valid = 0;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($name)) {
         $nameErr = "* Name is required";
     }
-    if(!isset($selected)) {
+    if (!isset($selected)) {
         $checkErr = "* Atleast one selection is required";
+    }
+    if ($nameErr == "" && $checkErr == "") {
+        $valid = 1;
     }
 }
 ?>
@@ -35,37 +39,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
 
-    <title>Document</title>
+    <title>Cupcakes</title>
 </head>
 <body>
-<form method="post" action="#.php" class="container mt-3">
-    <h1>Cupcake Fundraiser</h1>
+<?php
+if ($valid == 0) {
 
-    <div class="form-group">
-        <label for="name">Your name:</label><br>
-        <input type="text" name="name" class="form-control w-25 d-inline" placeholder="Input your name here">
-        <span class="error text-danger d-inline"><?php echo $nameErr; ?></span>
-    </div>
+    ?>
+    <form method="post" class="container mt-3">
+        <h1>Cupcake Fundraiser</h1>
 
-    <div class="form-check">
-        <p class="error text-danger d-inline"><?php echo $checkErr; ?></p><br>
-        <?php
-        $count = 0;
-        foreach ($array as $item) {
-            if ($count == 0) {
-                echo "<label><input type='checkbox' name='checkbox' value='$array[$item]' class='form-check-input'>$item</label><br>";
+        <div class="form-group">
+            <label for="name">Your name:</label><br>
+            <input type="text" name="name" class="form-control w-25 d-inline" placeholder="Input your name here">
+            <span class="error text-danger d-inline"><?php echo $nameErr; ?></span>
+        </div>
+
+        <div class="form-check">
+            <p class="error text-danger d-inline"><?php echo $checkErr; ?></p><br>
+
+            <?php
+            $count = 0;
+            foreach ($array as $item) {
+                echo "<label><input type='checkbox' name='item[]' value='$array[$item]' class='form-check-input'>$item</label><br>";
             }
-            else {
-                echo "<label><input type='checkbox' name='checkbox' value='$array[$item]' class='form-check-input'>$item</label><br>";
-            }
-            $count++;
-        }
-        ?>
-    </div>
+            ?>
+        </div>
 
-    <button id="submit" type="submit" class="btn btn-info">Submit order</button>
-</form>
+        <button id="submit" type="submit" class="btn btn-info">Submit order</button>
+    </form>
+    <?php
+}
+?>
 
+<?php
+if ($valid == 1) {
+    if(!empty($selected)){
+        $checked_count = count($_POST['item']) * 3.50;
+
+        echo "<p>Thank you, ".$name.", for your order!</p>";
+        echo "<p>Order total: ".number_format((float)$checked_count, 2, '.', '')."</p>";
+    }
+}
+?>
 
 <!-- JQuery -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
